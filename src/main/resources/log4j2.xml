@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <!--<PatternLayout pattern="%d{yyyy-MM-dd'T'HH:mm:ss} %level -&#45;&#45; [%logger~%M:%line] : %msg%n"/>-->
+            <PatternLayout pattern="--%level --- [%logger~%M:%line] : %msg%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.opensymphony.xwork2" level="info"/>
+        <Logger name="org.apache.struts2" level="info"/>
+        <Logger name="com.struts" level="debug"/>
+        <Root level="info">
+            <AppenderRef ref="STDOUT"/>
+        </Root>
+    </Loggers>
+</Configuration>

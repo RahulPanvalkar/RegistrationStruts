@@ -1,0 +1,212 @@
+:root {
+	--c-primary: #626cd6;
+	--c-primary-dark: #3f51b5;
+	--c-white: #fff;
+	--c-error-txt: #e93716;
+	--c-input-bg: #F8F8FB;
+	--c-input-border: #DADAF2;
+}
+
+/* Resetting default styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    padding: 0 0.8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--c-primary);
+}
+
+/* Rotate Effect (For Windy Weather Icons) */
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.rotate-animation {
+    animation: rotate 0.8s linear;
+}
+
+/* --REGISTER PAGE-- */
+.form-container {
+    width: 100%;
+    max-width: 400px;
+    background: var(--c-white);
+    border-radius: 6px;
+    margin-block: 5rem;
+    padding: 2.5rem 2rem;
+    box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.15);
+}
+
+form h2 {
+    font-size: 2rem;
+    text-align: center;
+    color: var(--c-primary);
+    margin-bottom: 1rem;
+}
+
+form .input-box {
+	margin-bottom: 1rem;
+}
+
+form .input-box label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+/* Input field */
+form .input-box input {
+    width: 100%;
+    height: 3rem;
+    border: 1px solid var(--c-input-border);
+    border-radius: 5px;
+    outline: none;
+    background: var(--c-input-bg);
+    font-size: 1rem;
+    padding: 0px 20px;
+    margin-bottom: 0.5rem;
+    transition: 0.2s ease;
+}
+
+form .gender-grp {
+	display: flex;
+	align-items: center;
+	height: 2rem;
+}
+
+form .gender-grp .gender-radio {
+	display: flex;
+	align-items: center;
+	margin-inline: 1rem 0.5rem;
+	width: 1rem;
+}
+
+form .gender-grp span {
+	margin-top: -8px;
+}
+
+.pass-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;  /* Adds a small gap between the input and the checkbox */
+}
+
+.pass-box .show-pass-check {
+    width: 1.2rem;
+}
+
+.show-password-label {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+
+form .check-box {
+	margin-bottom: 1rem;	
+	display: flex;
+	align-items: center;
+}
+
+form .check-box input {
+	margin-right: 5px;
+}
+
+
+a {
+    text-decoration: none;
+    color: var(--c-primary);
+    font-weight: 500;
+}
+
+.uline-link:hover {
+    text-decoration: underline;
+}
+
+/* Register button */
+#regBtn, #updtBtn {
+    width: 100%;
+    height: 3.5rem;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-block: 1rem;
+    transition: 0.3s ease;
+}
+
+.btn-enabled {
+	background: var(--c-primary);
+    color: var(--c-white);
+    cursor: pointer;
+}
+
+.btn-disabled {
+	background: rgba(239, 239, 239, 0.3);
+    color: rgba(16, 16, 16, 0.3);
+    cursor: default;
+}
+
+.log-in {
+	text-align: center;
+}
+
+.error {
+	color: var(--c-error-txt);
+}
+
+.success {
+	color: green;
+}
+
+#message {
+    font-size: 1rem;
+	font-weight: 500;
+	text-align: center;
+    margin-bottom: 1rem;
+}
+
+/* CAPTCHA */
+.captcha-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-block: 1.5rem;
+}
+
+#captchaImg {
+    width: 8rem;
+    height: auto;
+    /*border: 1px solid var(--c-input-border);*/
+    border-radius: 0.2rem
+}
+
+#captchaTxt {
+    width: 10rem;
+    margin: 0;
+}
+
+#captchaReset img {
+    width: 1.2rem;
+}
+
+#captchaCheck {
+    margin-top: 0.5rem;
+}
