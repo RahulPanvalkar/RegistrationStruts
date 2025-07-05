@@ -24,7 +24,7 @@ public class UpdateUserAction extends ActionSupport {
 
     private String message;
     private boolean success;
-    private boolean error;
+    private boolean error = false;
 
     private String formattedDob;
 
@@ -32,6 +32,7 @@ public class UpdateUserAction extends ActionSupport {
     public String execute() throws Exception {
         // check if all the fields are valid
         if (!validateUserFields()) {
+            error = true;
             return ERROR;
         }
 

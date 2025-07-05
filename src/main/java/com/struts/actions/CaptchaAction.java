@@ -53,7 +53,7 @@ public class CaptchaAction extends ActionSupport implements ServletRequestAware,
             out.close();      // close the stream
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         // Return NONE because response is handled
         return null;

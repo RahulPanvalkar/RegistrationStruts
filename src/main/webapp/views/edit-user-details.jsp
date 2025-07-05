@@ -12,13 +12,25 @@
 
         <main class="form-container">
 
-            <s:if test="message != null">
+            <%-- Success Case --%>
+            <s:if test="error == false && message != null">
+                <script>
+                    $(document).ready(function () {
+                        alert('<s:property value="message"/>');
+                        window.location.href='<s:url value="view-users"/>';
+                    });
+                </script>
+            </s:if>
+
+            <%-- Error Case--%>
+            <s:if test="error == true && message != null">
                 <script>
                     $(document).ready(function () {
                         alert('<s:property value="message"/>');
                     });
                 </script>
             </s:if>
+
 
             <s:form action="update-user" id="myform" method="post"  theme="simple">
 
