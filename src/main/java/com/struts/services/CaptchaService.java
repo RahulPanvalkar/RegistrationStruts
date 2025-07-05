@@ -3,10 +3,15 @@ package com.struts.services;
 import com.struts.util.LoggerUtil;
 import org.apache.logging.log4j.Logger;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Random;
 
 public class CaptchaService {
@@ -30,11 +35,15 @@ public class CaptchaService {
         Graphics2D graphics2D = bufferedImage.createGraphics();
 
         // Background color
-        graphics2D.setColor(Color.LIGHT_GRAY);
+        graphics2D.setColor(Color.BLACK);
         graphics2D.fillRect(0, 0, WIDTH, HEIGHT);
 
+        RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        rh.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        graphics2D.setRenderingHints(rh);
+
         // Draw some noise lines
-        graphics2D.setColor(Color.BLACK);
+        graphics2D.setColor(Color.LIGHT_GRAY);
         Random rand = new Random();
         for (int i = 0; i < 10; i++) {
             int x1 = rand.nextInt(WIDTH);
@@ -46,7 +55,7 @@ public class CaptchaService {
 
         // Draw the captcha text
         graphics2D.setFont(new Font("Arial", Font.BOLD, 30));
-        graphics2D.setColor(Color.BLACK);
+        graphics2D.setColor(Color.WHITE);
         FontMetrics fm = graphics2D.getFontMetrics();
         int x = (WIDTH - fm.stringWidth(captchaText)) / 2;  // center the text horizontally
         int y = ((HEIGHT - fm.getHeight()) / 2) + fm.getAscent();   // center the text vertically
@@ -58,7 +67,7 @@ public class CaptchaService {
 
     // Method to generate random text for CAPTCHA
     private String generateRandomText() {
-        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        String chars = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm0123456789";
         StringBuilder sb = new StringBuilder();
         Random random = new Random();
         for (int i = 0; i < CAPTCHA_LENGTH; i++) {

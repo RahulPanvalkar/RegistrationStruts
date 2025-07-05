@@ -1,5 +1,6 @@
 package com.struts.actions;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.struts.models.User;
 import com.struts.services.DownloadService;
@@ -19,10 +20,18 @@ public class DownloadFileAction extends ActionSupport {
 
     private final Logger logger = LoggerUtil.getLogger(DownloadFileAction.class);
 
+    public boolean downloadError = false;
+    public String message;
+
+    public boolean isDownloadError() {
+        return downloadError;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
     public String execute() throws Exception {
-        HttpServletResponse response = ServletActionContext.getResponse();
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setHeader("Content-Disposition", "attachment; filename=\"All-users-details.xlsx\"");
 
         String filePath;
         try {
@@ -30,7 +39,13 @@ public class DownloadFileAction extends ActionSupport {
             File file = new File(filePath);
 
             if (!file.exists()) {
-                logger.error("File not found: {}", filePath);
+                downloadError = true;
+                message = "Download failed, File not found";
+                logger.error("File not found >> filePath : [{}]", filePath);
+
+                // Store message in session or request
+                ActionContext.getContext().getSession().put("downloadError", true);
+                ActionContext.getContext().getSession().put("message", message);
                 return ERROR;
             }
 
@@ -48,14 +63,22 @@ public class DownloadFileAction extends ActionSupport {
                 return ERROR;
             }*/
 
+            HttpServletResponse response = ServletActionContext.getResponse();
             try (FileInputStream inputStream = new FileInputStream(file);
                  ServletOutputStream outputStream = response.getOutputStream()) {
+                response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                response.setHeader("Content-Disposition", "attachment; filename=\"All-users-details.xlsx\"");
 
                 inputStream.transferTo(outputStream); // for JDK 9 and above
                 outputStream.flush();
             }
         } catch (Exception e) {
             logger.error("Error processing file download", e);
+            downloadError = true;
+            message = "Error occurred, please try again later";
+            // Store message in session or request
+            ActionContext.getContext().getSession().put("downloadError", true);
+            ActionContext.getContext().getSession().put("message", message);
             return ERROR;
         }
 

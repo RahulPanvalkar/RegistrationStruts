@@ -47,6 +47,7 @@ public class RegisterAction extends ActionSupport implements ServletRequestAware
         if (!isCaptchaValid) {
             logger.debug("Invalid CAPTCHA >> setting repeatRequest == true");
             setRepeatRequest(true);
+            captchaTxt = null;
             error = true;
             message = "Invalid CAPTCHA code, try again";
             return ERROR;

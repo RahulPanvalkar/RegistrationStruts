@@ -8,7 +8,6 @@
         <title>Register</title>
         <%@include file="header.jsp" %>
         <script>
-            let isRepeatRequest = false;
             $(document).ready(function() {
                 $('#reg-link').addClass("active");
                 $('#view-users-link').removeClass("active");
@@ -119,11 +118,10 @@
                 $('#captchaReset img').addClass('rotate-animation');
                 // Wait 1 second, then reload the captcha and remove animation class
                 setTimeout(function() {
-                    $('#captchaImg').attr('src', 'captcha.action?' + Date.now());   // to bypass browser cache
+                    $('#captchaImg').attr('src', 'captcha.action?');// + Date.now());   // to bypass browser cache
                     $('#captchaReset img').removeClass('rotate-animation');
                 }, 1000);
             });
-
         </script>
     </body>
 

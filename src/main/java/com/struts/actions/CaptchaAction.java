@@ -36,18 +36,27 @@ public class CaptchaAction extends ActionSupport implements ServletRequestAware,
 
     @Override
     public String execute() throws Exception {
-        CaptchaService captchaService = new CaptchaService();
-        BufferedImage captchaImage = captchaService.createCaptchaImage(request);
+        try {
+            CaptchaService captchaService = new CaptchaService();
+            BufferedImage captchaImage = captchaService.createCaptchaImage(request);
 
-        // Write the image as PNG to response
-        response.setContentType("image/png");
-        OutputStream out = response.getOutputStream();
-        ImageIO.write(captchaImage, "png", out);
-        out.flush();      // ensure all bytes sent
-        out.close();      // close the stream
+            // Write the image as PNG to response
+            response.setContentType("image/png");
+            // for no-cache
+            response.setHeader("Cache-Control", "no-store");
+            response.setHeader("Pragma", "no-cache");
+            response.setDateHeader("Expires", 0);
 
+            OutputStream out = response.getOutputStream();
+            ImageIO.write(captchaImage, "png", out);
+            out.flush();      // ensure all bytes sent
+            out.close();      // close the stream
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         // Return NONE because response is handled
-        return NONE;
+        return null;
     }
 
 }

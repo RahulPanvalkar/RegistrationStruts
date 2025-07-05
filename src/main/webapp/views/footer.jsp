@@ -14,6 +14,7 @@
 
     // FOR REGISTRATION and EDIT USER DETAILS PAGE
     let isEditMode = false;
+    let isRepeatRequest = false;
     $(document).ready(function(){
 
     	// Initialize Datepicker for DOB field and set min max value
@@ -79,6 +80,7 @@
         } else {
             errors.delete("userid");
         }
+
 
         console.log("isRepeatRequest >> ", isRepeatRequest);
         if(isRepeatRequest) {
@@ -385,7 +387,7 @@
         let captchaValue = $("#captchaTxt").val();
         console.log(captchaValue);
 
-        let regex = /^[A-Z0-9]+$/;
+        let regex = /^[A-Za-z0-9]+$/;
 
         if (!captchaValue) {
             $("#captchaCheck").show();

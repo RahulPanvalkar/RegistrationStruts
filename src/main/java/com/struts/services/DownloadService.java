@@ -63,16 +63,12 @@ public class DownloadService {
             dateStyle.setDataFormat(dateFormat);
 
             CellStyle oddRowStyle = workbook.createCellStyle();
-            // Background color
             oddRowStyle.setFillForegroundColor(IndexedColors.WHITE.getIndex());
-            oddRowStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            oddRowStyle.setDataFormat(dateFormat);
+            //oddRowStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
             CellStyle evenRowStyle = workbook.createCellStyle();
-            // Background color
-            evenRowStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-            evenRowStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            evenRowStyle.setDataFormat(dateFormat);
+            evenRowStyle.setFillForegroundColor(IndexedColors.AQUA.getIndex());
+            //evenRowStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
             int rowNum = 1;
             for (User user : allUsers) {
@@ -80,9 +76,10 @@ public class DownloadService {
                 CellStyle dataStyle = workbook.createCellStyle();
 
                 if(rowNum % 2 == 0){
-
                     dataStyle.cloneStyleFrom(evenRowStyle);
+                    dateStyle.setFillForegroundColor(IndexedColors.AQUA.getIndex());
                 } else {
+                    dateStyle.setFillForegroundColor(IndexedColors.WHITE.getIndex());
                     dataStyle.cloneStyleFrom(oddRowStyle);
                 }
 
@@ -110,7 +107,7 @@ public class DownloadService {
 
                 Cell cell4 = row.createCell(4);
                 cell4.setCellValue(dobDate);  // Write Date
-                cell4.setCellStyle(dateStyle);
+                cell4.setCellStyle(dateStyle);  // set Date style
 
                 // determine gender value based on initial
                 String gender = (user.getGender() == 'M') ? "Male" : (user.getGender() == 'F') ? "Female" : "Other";
@@ -139,17 +136,13 @@ public class DownloadService {
         Font titleFont = workbook.createFont();
         titleFont.setBold(true);
         titleFont.setFontHeightInPoints((short) 16);
+        titleFont.setColor(IndexedColors.WHITE.getIndex());
+
         titleStyle.setFont(titleFont);
         titleStyle.setAlignment(HorizontalAlignment.CENTER);
 
-        // Add border
-        /*titleStyle.setBorderBottom(BorderStyle.THIN);
-        titleStyle.setBorderTop(BorderStyle.THIN);
-        titleStyle.setBorderRight(BorderStyle.THIN);
-        titleStyle.setBorderLeft(BorderStyle.THIN);*/
-
         // Background color
-        titleStyle.setFillForegroundColor(IndexedColors.LIGHT_CORNFLOWER_BLUE.getIndex());
+        titleStyle.setFillForegroundColor(IndexedColors.AQUA.getIndex());
         titleStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
         Row titleRow = sheet.createRow(0);
@@ -164,20 +157,27 @@ public class DownloadService {
     // Method to create the header row
     public static void createHeaderRow(Workbook workbook, Sheet sheet, String[] headers) {
         CellStyle headerStyle = workbook.createCellStyle();
-        // Add border
-        /*headerStyle.setBorderBottom(BorderStyle.THIN);
-        headerStyle.setBorderTop(BorderStyle.THIN);
-        headerStyle.setBorderRight(BorderStyle.THIN);
-        headerStyle.setBorderLeft(BorderStyle.THIN);*/
-
         // Bold font
         Font headerFont = workbook.createFont();
         headerFont.setBold(true);
         headerStyle.setFont(headerFont);
+        headerFont.setColor(IndexedColors.WHITE.getIndex());
 
         // Background color
-        headerStyle.setFillForegroundColor(IndexedColors.LIGHT_CORNFLOWER_BLUE.getIndex());
+        headerStyle.setFillForegroundColor(IndexedColors.GREY_40_PERCENT.getIndex());
         headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+        headerStyle.setBorderTop(BorderStyle.THIN);
+        headerStyle.setBorderLeft(BorderStyle.THIN);
+        headerStyle.setBorderRight(BorderStyle.THIN);
+        headerStyle.setBorderBottom(BorderStyle.THIN);
+
+        headerStyle.setTopBorderColor(IndexedColors.WHITE.getIndex());
+        headerStyle.setRightBorderColor(IndexedColors.WHITE.getIndex());
+        headerStyle.setLeftBorderColor(IndexedColors.WHITE.getIndex());
+        headerStyle.setBottomBorderColor(IndexedColors.WHITE.getIndex());
+
+        headerStyle.setAlignment(HorizontalAlignment.CENTER);
 
         Row headerRow = sheet.createRow(1);
         for (int i = 0; i < headers.length; i++) {

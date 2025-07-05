@@ -33,12 +33,15 @@
 		</action>
 
 		<action name="download-file" class="com.struts.actions.DownloadFileAction">
-			<result name="none" type="stream" />
+			<!--<result name="none" type="stream" />-->
+			<result name="success"/>
+			<result name="error" type="redirectAction">
+				<param name="actionName">view-users</param>
+				<param name="message">${message}</param>  <!-- Optional: pass message via URL param -->
+			</result>
 		</action>
 
-		<action name="captcha" class="com.struts.actions.CaptchaAction">
-			<result name="none" />
-		</action>
+		<action name="captcha" class="com.struts.actions.CaptchaAction" />
 
 	</package>
 

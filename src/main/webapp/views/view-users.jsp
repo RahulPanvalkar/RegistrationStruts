@@ -14,6 +14,18 @@
     </script>
     <body>
         <%@include file="./navbar.jsp" %>
+        <s:if test="#session.downloadError == true">
+            <script>
+                $(document).ready(function() {
+                    alert('<s:property value="#session.message" />');
+                });
+            </script>
+            <%-- Clear session after displaying message --%>
+            <%
+                session.removeAttribute("downloadError");
+                session.removeAttribute("message");
+            %>
+        </s:if>
 
         <div class="container">
             <div class="table-container">
