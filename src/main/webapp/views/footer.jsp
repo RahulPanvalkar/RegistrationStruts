@@ -439,38 +439,81 @@
         });
     });
 
+    // function to populate table rows based users details
+    function renderUserTable(response) {
+        let users = response.users;
+        console.log("json users >> ", users);
+        var $tableBody = $("#tableBody");
+        $tableBody.empty();
+
+        if (!users || users.length === 0) {
+            var $row = $("<tr></tr>");
+            var $cell = $("<td></td>")
+                .attr("colspan", 7)
+                .html('<span class="no-data">No Data Available</span>');
+            $row.append($cell);
+            $tableBody.append($row);
+            return;
+        }
+
+        users.forEach(function (user) {
+            var $row = $("<tr></tr>");
+            $("<td></td>").text(user.userId).appendTo($row);
+            $("<td></td>").text(user.firstName).appendTo($row);
+            $("<td></td>").text(user.lastName).appendTo($row);
+            $("<td></td>").text(user.email).appendTo($row);
+            $("<td></td>").text(user.dob).appendTo($row);
+            $("<td></td>").text(user.gender).appendTo($row);
+            /*$("<td></td>").html(
+                '<td>
+                    <a class="action-btn" href="#">Update</a>
+                    <a class="action-btn rm-btn" href="#" onclick="removeUser('${user.userId}','${user.firstName}')">Remove</a>
+                </td>'
+            );*/
+
+            $tableBody.append($row);
+        });
+    }
+
+
     // function to be called to remove user data
     function removeUser(userId, fullName) {
         console.log("inside removeUser >> userId::", userId, " && fullName:: ", fullName);
         let confirmValue = confirm("Are you sure ? All the details of '" + fullName + "' will be permanently deleted");
         console.log("confirmValue : " + confirmValue);
         if (confirmValue) {
-            deleteRecord(userId);
+            makeAjaxRequest('delete-user?userid='+userId, handleDeleteResponse);
         }
     }
 
-    // function to send ajax request to servlet to delete user data
-    function deleteRecord(userId) {
-        console.log("delete record called for userid: ", userId);
+    // function to handle response for the delete request
+    function handleDeleteResponse(response) {
+        console.log("deleteRecord called data: ", response);
+        if (response.success === true) {
+            alert("User details has been deleted successfully");
+        } else {
+            console.log("delete message >> ", response.message);
+            alert(response.message || "An unexpected error occurred");
+        }
+        location.reload();
+    }
+</script>
+
+<script>
+    // Generic function to send AJAX request
+    function makeAjaxRequest(URL, callback) {
+        console.log("sending ajax request..");
         $.ajax({
-            url: `delete-user`,
-            type: 'POST',
+            url: URL,
+            type: 'GET',
             dataType: 'json',
-            data: { userid: userId },
-            success: function (data) {
-                console.log("Success >> ", data);
-                if (data.success === true) {
-                    alert("User data has been deleted successfully");
-                    location.reload();
-                } else {
-                    console.log("delete message >> ", data.message);
-                    alert(data.message || "An unexpected error occurred");
-                    location.reload();
-                }
+            success: function(response) {
+                console.log("makeAjaxRequest >> response >> ", response);
+                callback(response);
             },
             error: function(jqXhr, textStatus, errorMessage) {
-                console.log("delete request failed", errorMessage);
-                alert(`Delete request failed: ${errorMessage}`);
+                console.error("Error occurred: ", errorMessage);
+                callback([]);
             }
         });
     }

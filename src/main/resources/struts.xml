@@ -12,12 +12,16 @@
 			<result>/views/register.jsp</result>
 		</action>
 
+		<action name="view-users">
+			<result>/views/view-users.jsp</result>
+		</action>
+
 		<action name="register" class="com.struts.actions.RegisterAction">
 			<result name="success">/views/register.jsp</result>
 			<result name="error">/views/register.jsp</result>
 		</action>
 
-		<action name="view-users" class="com.struts.actions.ViewUsersAction">
+		<action name="view-users-old" class="com.struts.actions.ViewUsersAction">
 			<result name="success">/views/view-users.jsp</result>
 			<result name="error">/views/view-users.jsp</result>
 		</action>
@@ -47,6 +51,15 @@
 
 	<package name="user" namespace="/" extends="json-default">
 		<action name="delete-user" class="com.struts.actions.DeleteUserAction">
+			<result name="success" type="json">
+				<param name="root">result</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+
+		<action name="get-all-users" class="com.struts.actions.GetAllRecords">
 			<result name="success" type="json">
 				<param name="root">result</param>
 			</result>

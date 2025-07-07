@@ -57,7 +57,6 @@ public class UserDao {
 		}
 	}
 	
-	
 	// Method to save new user
 	public void updateUser(User user) {
 		logger.debug("user >>  {}", user);
@@ -138,6 +137,24 @@ public class UserDao {
 			e.printStackTrace();
 		}
 		return Optional.empty();
+	}
+
+	// Method to get count of all users in table
+	public int getTotalUserCount() {
+		String sql = "SELECT COUNT(*) AS count FROM users";
+		try (Connection conn = DBConnectionManager.getConnection();
+			 PreparedStatement ps = conn.prepareStatement(sql)) {
+
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return rs.getInt("count");
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 
 	// Method to get all users data from DB from username (email/userId)

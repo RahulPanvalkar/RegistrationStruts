@@ -2,12 +2,14 @@ package com.struts.services;
 
 import com.struts.dao.UserDao;
 import com.struts.models.User;
+import com.struts.models.UserDTO;
 import com.struts.util.LoggerUtil;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -84,6 +86,7 @@ public class UserActionService {
         }
     }
 
+    // method to get user data
     public Map<String, Object> getUser(String username) {
         logger.debug("username: [{}]", username);
         Map<String, Object> result = new HashMap<>();
@@ -104,6 +107,61 @@ public class UserActionService {
             return result;
         }
     }
+
+    // method to get user data (paginated)
+    public Map<String, Object> getUsers(String page, String size) {
+        int pageNumber = 1;       // default to page 1
+        int usersPerPage = 10;    // default page size
+
+        try {
+            if (page != null && !page.trim().isEmpty()) {
+                pageNumber = Integer.parseInt(page);
+                if (pageNumber < 1) pageNumber = 1;
+            }
+
+            if (size != null && !size.trim().isEmpty()) {
+                usersPerPage = Integer.parseInt(size);
+                if (usersPerPage < 1) usersPerPage = 10;
+            }
+
+            int offset = (pageNumber - 1) * usersPerPage;
+
+            Map<String, Object> result = new HashMap<>();
+
+            // Fetch paginated users from DAO
+            List<User> users = userDao.getPaginatedUsers(usersPerPage, offset);
+            logger.debug(users);
+            if (users == null || users.isEmpty()) {
+                result.put("success", false);
+                result.put("message", "User data not found");
+                return result;
+            }
+
+            // Ideally total user count should come from a separate DAO method
+            int totalUsers = userDao.getTotalUserCount();
+            int totalPages = (int) Math.ceil((double) totalUsers / usersPerPage);
+
+            // convert UserList to UserDTO list
+            List<UserDTO> userDTOList = users.stream()
+                    .map(UserDTO::new)
+                    .toList();
+
+            result.put("success", true);
+            result.put("message", "User data fetched successfully");
+            result.put("users", userDTOList);
+            result.put("totalPages", totalPages);
+            result.put("currentPage", pageNumber);
+            return result;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Map<String, Object> errorResult = new HashMap<>();
+            errorResult.put("success", false);
+            errorResult.put("message", "Error: " + e.getMessage());
+            return errorResult;
+        }
+    }
+
 
     // method to delete the user
     public Map<String, Object> deleteUser(String userId) {

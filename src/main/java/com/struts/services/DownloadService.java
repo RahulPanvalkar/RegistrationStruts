@@ -160,8 +160,8 @@ public class DownloadService {
         // Bold font
         Font headerFont = workbook.createFont();
         headerFont.setBold(true);
-        headerStyle.setFont(headerFont);
         headerFont.setColor(IndexedColors.WHITE.getIndex());
+        headerStyle.setFont(headerFont);
 
         // Background color
         headerStyle.setFillForegroundColor(IndexedColors.GREY_40_PERCENT.getIndex());

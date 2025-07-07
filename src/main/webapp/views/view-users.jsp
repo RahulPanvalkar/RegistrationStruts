@@ -6,10 +6,13 @@
         <title>All Users</title>
         <%@include file="./header.jsp" %>
     </head>
+    <%@include file="./footer.jsp" %>
     <script>
         $(document).ready(function() {
             $('#view-users-link').addClass("active");
             $('#reg-link').removeClass("active");
+            // making AJAX request to get all users data
+            makeAjaxRequest('get-all-users?page=1&size=5', renderUserTable);
         });
     </script>
     <body>
@@ -50,7 +53,7 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="userTable">
+                    <tbody id="tableBody">
                         <s:if test="users == null || users.size() == 0">
                             <tr id="no-data-row">
                                 <td colspan="7"><span class="no-data">No Data Available</span></td>
@@ -112,6 +115,5 @@
             </div>
         </div>
 
-        <%@include file="./footer.jsp" %>
     </body>
 </html>
