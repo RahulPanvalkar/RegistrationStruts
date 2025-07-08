@@ -222,8 +222,6 @@
     	toggleRegisterBtn(isAllValid);
     }
 
-
-
     // function to validate first name
     function validateFirstname() {
     	console.log("validateFirstName is called..");
@@ -424,7 +422,7 @@
                 $(".pagination").show();
             }
 
-            $("#userTable tr").not("#no-data-row").each(function () {
+            $("#tableBody tr").not("#no-data-row").each(function () {
                 var isMatch = $(this).text().toLowerCase().indexOf(value) > -1;
                 $(this).toggle(isMatch);
                 if (isMatch) matchCount++;
@@ -432,13 +430,28 @@
 
             // if no rows matched, show no data row
             if (matchCount === 0) {
-                $("#no-data-row").show();
-                } else {
-                $("#no-data-row").hide();
+                toggleNoDataRow(true);
+            } else {
+                toggleNoDataRow(false);
             }
         });
     });
 
+    // function to show/hide no-data row
+    function toggleNoDataRow(showRow) {
+        console.log("toggleNoDataRow >> showRow : ", showRow);
+        if(showRow === true) {
+            $("#no-data-row").show();
+            $('#userTable').addClass("width-auto");
+            $('#userTable').removeClass("max-content-width");
+            return;
+        }
+        $("#no-data-row").hide();
+        $('#userTable').addClass("max-content-width");
+        $('#userTable').removeClass("width-auto");
+    }
+
+    var currentPageValue = 1;
     // function to populate table rows based users details
     function renderUserTable(response) {
         let users = response.users;
@@ -446,16 +459,22 @@
         var $tableBody = $("#tableBody");
         $tableBody.empty();
 
-        if (!users || users.length === 0) {
-            var $row = $("<tr></tr>");
-            var $cell = $("<td></td>")
-                .attr("colspan", 7)
-                .html('<span class="no-data">No Data Available</span>');
-            $row.append($cell);
-            $tableBody.append($row);
+        // no data row
+        var $row = $('<tr id="no-data-row"></tr>');
+        var $cell = $("<td></td>")
+            .attr("colspan", 7)
+            .html('<span class="no-data">No Data Available</span>');
+        $row.append($cell);
+        $tableBody.append($row);
+
+        if (!users && users.length === 0) {
+            toggleNoDataRow(true);
             return;
         }
+        // else hide no data row
+        toggleNoDataRow(false);
 
+        // create user detail rows
         users.forEach(function (user) {
             var $row = $("<tr></tr>");
             $("<td></td>").text(user.userId).appendTo($row);
@@ -464,17 +483,45 @@
             $("<td></td>").text(user.email).appendTo($row);
             $("<td></td>").text(user.dob).appendTo($row);
             $("<td></td>").text(user.gender).appendTo($row);
-            /*$("<td></td>").html(
-                '<td>
-                    <a class="action-btn" href="#">Update</a>
-                    <a class="action-btn rm-btn" href="#" onclick="removeUser('${user.userId}','${user.firstName}')">Remove</a>
-                </td>'
-            );*/
-
+            // Create the action buttons cell
+            var $actions = $('<td></td>').html(
+                `<a class="action-btn" href="edit-user?userid=\${user.userId}">Update</a> ` +
+                `<a class="action-btn rm-btn" onclick="removeUser('\${user.userId}', '\${user.firstName} \${user.lastName}')">Remove</a>`
+            );
+            $row.append($actions);
             $tableBody.append($row);
         });
+
+        renderPagination(response.totalPages, response.currentPage);
     }
 
+    function renderPagination(totalPages, currentPage) {
+        console.log("rendering pagination..", totalPages, currentPage);
+        currentPageValue = currentPage;
+        const $pagination = $('#pagination');
+        $pagination.empty();
+
+        if (totalPages === 0) return;
+
+        $pagination.append(`<a href="#" data-page="1">&laquo; First</a>`);
+
+        for (let i = 1; i <= totalPages; i++) {
+            const activeClass = i === currentPage ? 'active' : '';
+            $pagination.append(`<a href="view-users?page=\${i}" class="\${activeClass}" data-page="\${i}">\${i}</a> `);
+        }
+
+        $pagination.append(`<a href="#" data-page="\${totalPages}">Last &raquo;</a>`);
+    }
+
+    // Handle pagination link clicks
+    $(document).on('click', '#pagination a', function(e) {
+        e.preventDefault();
+        const selectedPage = parseInt($(this).data('page'));
+        if (!isNaN(selectedPage)) {
+            currentPage = selectedPage;
+            makeAjaxRequest('get-all-users?page='+currentPage, renderUserTable);
+        }
+    });
 
     // function to be called to remove user data
     function removeUser(userId, fullName) {
@@ -495,7 +542,8 @@
             console.log("delete message >> ", response.message);
             alert(response.message || "An unexpected error occurred");
         }
-        location.reload();
+        //location.reload();
+        makeAjaxRequest('get-all-users?page='+currentPageValue, renderUserTable);
     }
 </script>
 

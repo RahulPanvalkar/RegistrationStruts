@@ -68,17 +68,22 @@ table {
 	color: var(--c-primary);
 }
 
+table, th, td {
+    border: 1px solid white;
+    padding: 0.5rem;
+}
+
 table {
-	width: 100%;
 	border-collapse: collapse;
 	font-size: 0.8rem;
 }
 
- 
-table, th, td {
-    /*width: max-content;*/
-    border: 1px solid white;
-    padding: 0.5rem;
+.max-content-width {
+    width: max-content;
+}
+
+.width-auto {
+    width: auto;
 }
 
 th {
@@ -103,6 +108,7 @@ tr:nth-child(even) {
     border: 0.125rem solid lightgrey;
     border-radius: 4px;
     border-style: outset;
+    cursor: pointer;
     transition: 0.5s ease;
 }
 

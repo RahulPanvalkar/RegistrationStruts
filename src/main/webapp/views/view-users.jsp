@@ -12,7 +12,7 @@
             $('#view-users-link').addClass("active");
             $('#reg-link').removeClass("active");
             // making AJAX request to get all users data
-            makeAjaxRequest('get-all-users?page=1&size=5', renderUserTable);
+            makeAjaxRequest('get-all-users?page=1', renderUserTable);
         });
     </script>
     <body>
@@ -41,7 +41,7 @@
                     <input type="text" id="searchText" placeholder="Search here" style="width:250px" />
                 </div>
 
-                <table border="1">
+                <table id="userTable" border="1">
                     <thead>
                         <tr>
                             <th>User ID</th>
@@ -88,6 +88,8 @@
                         </s:iterator>
                     </tbody>
                 </table>
+
+                <div id="pagination" class="pagination"></div>
 
                 <s:if test="users != null && users.size() > 0">
                     <div class="pagination">
