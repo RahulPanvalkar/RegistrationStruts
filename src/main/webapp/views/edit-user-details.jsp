@@ -46,7 +46,7 @@
                     <label for="fname">First Name</label>
                     <s:textfield name="fname" id="fname" placeholder="Enter first name"
                         value="%{user.firstName}" required="true" />
-                    <h5 id="fnameCheck" class="error">First name is missing</h5>
+                    <h5 id="fnameCheck" class="error"></h5>
                 </div>
 
                 <!-- Last Name -->
@@ -54,7 +54,7 @@
                     <label for="lname">Last Name</label>
                     <s:textfield name="lname" id="lname" placeholder="Enter last name"
                         value="%{user.lastName}" required="true" />
-                    <h5 id="lnameCheck" class="error">Last name is missing</h5>
+                    <h5 id="lnameCheck" class="error"></h5>
                 </div>
 
                 <!-- Email -->
@@ -62,14 +62,14 @@
                     <label for="email">Email Id</label>
                     <s:textfield name="email" id="email" placeholder="Enter email address" type="email"
                         value="%{user.email}" required="true"/>
-                    <h5 id="emailCheck" class="error">Email id is missing</h5>
+                    <h5 id="emailCheck" class="error"></h5>
                 </div>
 
                 <!-- DOB -->
                 <div class="input-box">
                     <label for="dobPicker">Date of Birth</label>
                     <s:textfield name="dob" id="dobPicker" placeholder="DD/MM/YYYY" value="%{formattedDob}" readonly="true"/>
-                    <h5 id="dobCheck" class="error" style="display:none; color:red;">Age must be between 18 and 100 years</h5>
+                    <h5 id="dobCheck" class="error" style="display:none; color:red;"></h5>
                 </div>
 
                 <!-- GENDER -->

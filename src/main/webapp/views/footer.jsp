@@ -404,14 +404,14 @@
 </script>
 
 <script>
-    // Function to trigger download file url/action
-    $('#download').click(function(){
-        console.log("sending request to download user data...");
-        window.location.href = `download-file`;
-    });
-
-    // Search functionality for VIEW USERS page
     $(document).ready(function () {
+        // Function to trigger download file url/action
+        $('#download').click(function(){
+            console.log("sending request to download user data...");
+            window.location.href = `download-file`;
+        });
+
+        // Search functionality for VIEW USERS page
         $("#searchText").on("keyup", function () {
             var value = $(this).val().toLowerCase();
             var matchCount = 0;
@@ -451,8 +451,8 @@
         $('#userTable').removeClass("width-auto");
     }
 
-    var currentPageValue = 1;
     // function to populate table rows based users details
+    var currentPageValue = 1;
     function renderUserTable(response) {
         let users = response.users;
         console.log("json users >> ", users);
@@ -513,7 +513,7 @@
         $pagination.append(`<a href="#" data-page="\${totalPages}">Last &raquo;</a>`);
     }
 
-    // Handle pagination link clicks
+    // function to handle pagination link clicks
     $(document).on('click', '#pagination a', function(e) {
         e.preventDefault();
         const selectedPage = parseInt($(this).data('page'));
